@@ -1,5 +1,10 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { Link, useLoaderData, type MetaFunction } from '@remix-run/react'
+import {
+	Link,
+	useLoaderData,
+	useRouteError,
+	type MetaFunction,
+} from '@remix-run/react'
 import { db } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
 
@@ -21,7 +26,6 @@ export async function loader({ params }: DataFunctionArgs) {
 }
 
 export default function ProfileRoute() {
-	// throw new Error('🐨 Component error')
 	const data = useLoaderData<typeof loader>()
 	return (
 		<div className="container mb-48 mt-36">
@@ -48,3 +52,14 @@ export const meta: MetaFunction<typeof loader> = ({ data, params }) => {
 // 🐨 get the error from useRouteError()
 // 💰 If you'd like it to look nice, you can use this class name:
 // className="container mx-auto flex h-full w-full items-center justify-center bg-destructive p-20 text-h2 text-destructive-foreground"
+export function ErrorBoundary() {
+	const error = useRouteError()
+	console.error(error)
+
+	return (
+		<div className="container mx-auto flex h-full w-full items-center justify-center bg-destructive p-20 text-h2 text-destructive-foreground">
+			<h1>Oh no!</h1>
+			<p>Something bad happened! Sorry!</p>
+		</div>
+	)
+}

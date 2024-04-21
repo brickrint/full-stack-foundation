@@ -4,6 +4,7 @@ import { floatingToolbarClassName } from '#app/components/floating-toolbar.tsx'
 import { Button } from '#app/components/ui/button.tsx'
 import { db } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
+import { type loader as notesLoader } from './notes.tsx'
 
 export async function loader({ params }: DataFunctionArgs) {
 	const note = db.note.findFirst({
@@ -62,18 +63,19 @@ export default function NoteRoute() {
 }
 
 // 🦺 check the note below for making this type safe
-export const meta: MetaFunction<typeof loader> = ({
-	data,
-	params,
-	matches,
-}) => {
+export const meta: MetaFunction<
+	typeof loader,
+	{ 'routes/users+/$username_+/notes': typeof notesLoader }
+> = ({ data, params, matches }) => {
 	// 🐨 use matches to find the route for notes by that ID
-	// 💰 matches.find(m => m.id === 'routes/users+/$username_+/notes')
+	const parentData = matches.find(
+		m => m.id === 'routes/users+/$username_+/notes',
+	)?.data
 
 	// 🐨 use the data from our loader and our parent's loader to create a title
 	// and description that show the note title, user's name, and the first part of
 	// the note's content.
-	const displayName = params.username
+	const displayName = parentData?.owner.username ?? params.username
 
 	const noteTitle = data?.note.title ?? 'Note'
 	const noteContentsSummary =

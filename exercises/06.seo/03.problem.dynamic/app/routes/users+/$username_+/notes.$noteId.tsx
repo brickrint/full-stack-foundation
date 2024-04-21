@@ -1,4 +1,9 @@
-import { json, redirect, type DataFunctionArgs } from '@remix-run/node'
+import {
+	type MetaFunction,
+	json,
+	redirect,
+	type DataFunctionArgs,
+} from '@remix-run/node'
 import { Form, Link, useLoaderData } from '@remix-run/react'
 import { floatingToolbarClassName } from '#app/components/floating-toolbar.tsx'
 import { Button } from '#app/components/ui/button.tsx'
@@ -59,4 +64,16 @@ export default function NoteRoute() {
 			</div>
 		</div>
 	)
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+	return [
+		{
+			title: `${data?.note.title} note | Epic Notes`,
+		},
+		{
+			name: 'description',
+			content: `Checkout ${data?.note.content}'s note on Epic Notes`,
+		},
+	]
 }
