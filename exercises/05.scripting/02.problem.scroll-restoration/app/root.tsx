@@ -7,6 +7,7 @@ import {
 	LiveReload,
 	Outlet,
 	Scripts,
+	ScrollRestoration,
 	useLoaderData,
 } from '@remix-run/react'
 import faviconAssetUrl from './assets/favicon.svg'
@@ -60,6 +61,7 @@ export default function App() {
 				</div>
 				<div className="h-5" />
 				{/* 🐨 Add ScrollRestoration from '@remix-run/react' here */}
+				<ScrollRestoration />
 				<Scripts />
 				<KCDShop />
 				<LiveReload />

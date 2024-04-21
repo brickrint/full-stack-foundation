@@ -28,14 +28,15 @@ export async function action({ request, params }: DataFunctionArgs) {
 	const formData = await request.formData()
 	const title = formData.get('title')
 	const content = formData.get('content')
-	// 🐨 add a check to make certain that title and content are both a string
-	// if they are not, throw an error
-	// 💯 as an extra credit, throw a more descriptive 400 Response instead of an error
-	// 💯 as an extra credit, try using the invariantResponse function from "#app/utils/misc.ts"
+
+	invariantResponse(
+		typeof title === 'string' && typeof content === 'string',
+		'Title must be strings',
+	)
+	invariantResponse(typeof content === 'string', 'Content must be strings')
 
 	db.note.update({
 		where: { id: { equals: params.noteId } },
-		// @ts-expect-error 🦺 we'll fix this next...
 		data: { title, content },
 	})
 
@@ -54,7 +55,7 @@ export default function NoteEdit() {
 				<div>
 					{/* 🦉 NOTE: this is not an accessible label, we'll get to that in the accessibility exercises */}
 					<Label>Title</Label>
-					<Input name="title" defaultValue={data.note.title} />
+					<Input name="title2" defaultValue={data.note.title} />
 				</div>
 				<div>
 					{/* 🦉 NOTE: this is not an accessible label, we'll get to that in the accessibility exercises */}

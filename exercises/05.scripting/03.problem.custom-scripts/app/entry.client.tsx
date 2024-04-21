@@ -4,6 +4,11 @@ import { hydrateRoot } from 'react-dom/client'
 
 // 🐨 add an if statement here that checks if the ENV.MODE is development
 // 🐨 if it is, then: import('./utils/devtools.tsx').then(({ init }) => init())
+
+if (ENV.MODE === 'development') {
+	await import('./utils/devtools.tsx').then(({ init }) => init())
+}
+
 startTransition(() => {
 	hydrateRoot(document, <RemixBrowser />)
 })

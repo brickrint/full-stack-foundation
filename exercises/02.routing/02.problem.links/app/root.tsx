@@ -4,6 +4,7 @@ import { json, type LinksFunction } from '@remix-run/node'
 import {
 	Links,
 	LiveReload,
+	NavLink,
 	Outlet,
 	Scripts,
 	useLoaderData,
@@ -12,6 +13,7 @@ import faviconAssetUrl from './assets/favicon.svg'
 import { KCDShop } from './kcdshop.tsx'
 import fontStylesheetUrl from './styles/font.css'
 import tailwindStylesheetUrl from './styles/tailwind.css'
+import { cn } from './utils/misc.tsx'
 
 export const links: LinksFunction = () => {
 	return [
@@ -37,10 +39,15 @@ export default function App() {
 				<header className="container mx-auto py-6">
 					<nav className="flex justify-between">
 						{/* 🐨 switch this div to a Link from @remix-run/react and link to "/" */}
-						<div>
+						<NavLink
+							to="/"
+							className={({ isActive }) =>
+								cn(isActive ? 'bg-accent' : null, 'p-2')
+							}
+						>
 							<div className="font-light">epic</div>
 							<div className="font-bold">notes</div>
-						</div>
+						</NavLink>
 					</nav>
 				</header>
 
@@ -50,10 +57,15 @@ export default function App() {
 
 				<div className="container mx-auto flex justify-between">
 					{/* 🐨 switch this div to a Link from @remix-run/react and link to "/" */}
-					<div>
+					<NavLink
+						to="/"
+						className={({ isActive }) =>
+							cn(isActive ? 'bg-accent' : null, 'p-2')
+						}
+					>
 						<div className="font-light">epic</div>
 						<div className="font-bold">notes</div>
-					</div>
+					</NavLink>
 					<p>Built with ♥️ by {data.username}</p>
 				</div>
 				<div className="h-5" />

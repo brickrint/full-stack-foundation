@@ -1,5 +1,10 @@
 import { json, type DataFunctionArgs } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
+import { Form, useLoaderData } from '@remix-run/react'
+import { floatingToolbarClassName } from '#app/components/floating-toolbar.tsx'
+import { Button } from '#app/components/ui/button.tsx'
+import { Input } from '#app/components/ui/input.tsx'
+import { Label } from '#app/components/ui/label.tsx'
+import { Textarea } from '#app/components/ui/textarea.tsx'
 import { db } from '#app/utils/db.server.ts'
 import { invariantResponse } from '#app/utils/misc.tsx'
 
@@ -22,16 +27,31 @@ export async function loader({ params }: DataFunctionArgs) {
 export default function NoteEdit() {
 	const data = useLoaderData<typeof loader>()
 
-	// 💣 remove this so we can return our form instead
-	return <pre>{JSON.stringify(data, null, 2)}</pre>
+	return (
+		<Form method="post" className="flex flex-col gap-4 p-5">
+			<fieldset>
+				<Label htmlFor="title">Title</Label>
+				<Input
+					id="title"
+					name="title"
+					type="text"
+					defaultValue={data.note.title}
+				/>
+			</fieldset>
 
-	// 🐨 render a Remix Form with the method of "post"
-	// 🐨 render an <label> with the text "Title" and an <input> with the name "title" and defaultValue of data.note.title
-	// 🐨 render an <label> with the text "Content" and an <textarea> with the name "content" and defaultValue of data.note.content
-	// 🐨 render a button with the text "Submit"
+			<fieldset>
+				<Label htmlFor="content">Content</Label>
+				<Textarea
+					id="content"
+					name="content"
+					defaultValue={data.note.content}
+				/>
+			</fieldset>
 
-	// 💯 as extra credit, you can add a reset button (https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button)
-	// 💯 as extra credit, you can use the Label, Input, Textarea, and Button components from '#app/components/ui/*.tsx'
-	// 💯 as extra credit, style it nicely with some tailwind classes to give it some space.
-	// 💯 if you *really* have extra time, you can wrap the submit and reset buttons in a div with floatingToolbarClassName from '#app/components/floating-toolbar.tsx' and make that look nice.
+			<div className={floatingToolbarClassName}>
+				<Button type="submit">Submit</Button>
+				<Button type="reset">Reset</Button>
+			</div>
+		</Form>
+	)
 }
